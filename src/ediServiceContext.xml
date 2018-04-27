@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!-- $Id: ediServiceContext.xml $ -->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	 <!-- 配置Job类 --> 
+	 <bean id="myJob" class="com.yc.job.MyJob">
+	 </bean>
+	 <!-- 配置JobDetail -->
+     <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.yc.job.MyJobDetail"></property>
+        <property name="durability" value="true"></property>
+    </bean>
+ </beans>

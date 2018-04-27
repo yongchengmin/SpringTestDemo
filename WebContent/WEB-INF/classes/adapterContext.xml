@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!-- $Id: adapterContext.xml $ -->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 配置调度工厂 --> 
+	 <!-- lazy-init=’false’,则容器启动时就会执行调度程序;
+	 	  lazy-init=’true’,则需要实例化该bean才能执行调度程序 -->
+	 <bean id="springJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="true"> 
+		 <property name="triggers"> 
+			 <list> 
+			 	<ref bean="cronTriggerFactoryBean"></ref> 
+			 	<ref bean="quartzJobBean"></ref>
+			 	<ref bean="simpleTrigger"/>
+			 </list> 
+		 </property> 
+	 </bean> 
+    
+	 <!-- 1,CronTrigger 配置调度任务 -->
+	 <!-- 配置JobDetail --> 
+	 <bean id="springQtzJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+		 <!-- 执行目标job --> 
+		 <property name="targetObject" ref="myJob"></property> 
+		 <!-- 要执行的方法 --> 
+		 <property name="targetMethod" value="execute"></property> 
+	 </bean> 
+	 <!-- 配置tirgger触发器 --> 
+	 <bean id="cronTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		 <!-- jobDetail --> 
+		 <property name="jobDetail" ref="springQtzJobMethod"></property> 
+		 <!-- cron表达式，执行时间 每5秒执行一次 --> 
+		 <property name="cronExpression" value="0/5 * * * * ?"></property> 
+	 </bean> 
+	 
+	 <!-- 2,QuartzJobBean 配置调度任务 -->
+	 <!-- 配置quartzJob触发器 -->
+    <bean id="quartzJobBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- jobDetail -->
+        <property name="jobDetail" ref="jobDetail"></property>
+        <!-- cron表达式，执行时间  每5秒执行一次 -->
+        <property name="cronExpression" value="0/5 * * * * ?"></property>
+    </bean>
+	 
+	 
+	 <!--3,配置简单触发器-->
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="simpleJobDetail"/>
+        <!-- 延迟3s执行 -->
+        <property name="startDelay" value="3000"/>
+        <!-- 每隔10s执行一次 -->
+        <property name="repeatInterval" value="10000"/>
+    </bean>
+    <!--使用简单作业详情-->
+    <bean id="simpleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!--配置简单作业的目标类-->
+        <property name="targetObject" ref="mySimpleJob"/>
+        <!--配置简单作业的目标方法-->
+        <property name="targetMethod" value="execute"/>
+        <!--false表示等上一个任务执行完后再开启新的任务-->
+        <property name="concurrent" value="false"/>
+    </bean>
+	 
+ </beans>
