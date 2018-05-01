@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * ²âÊÔ¿ØÖÆÀà
+ * æµ‹è¯•æ§åˆ¶ç±»
  */
 @Controller
 @RequestMapping("/webPage/")
 public class ControllerTest {
     
     /**
-     * ²âÊÔ·½·¨
+     * æµ‹è¯•æ–¹æ³•
      * 
      * @return ModelAndView
      */
-	//http://127.0.0.1:8080/SpringTestDemo/webPage/test.do Ê±»áÏÔÊ¾test.jspÒ³Ãæ,²¢´«Öµ¸øÒ³Ãæ.
+	//http://127.0.0.1:8080/SpringTestDemo/webPage/test.do æ—¶ä¼šæ˜¾ç¤ºtest.jspé¡µé¢,å¹¶ä¼ å€¼ç»™é¡µé¢.
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ModelAndView testMVC() {
         System.out.println("invoke.....");
